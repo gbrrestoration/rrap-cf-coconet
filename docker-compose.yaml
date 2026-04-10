@@ -1,0 +1,18 @@
+services:
+  coconet-headless:
+    build: .
+    image: coconet-cf-local
+    environment:
+      # Only specify values that differ from the baseline defaults.
+      # See .env.template or generate_experiment.sh for all available parameters.
+      SSP: 1.9
+      ENSEMBLE_RUNS: 3
+      END_YEAR: 2100
+      START_COTS_CONTROL: 2019
+    volumes:
+      - coconet-prefs:/opt/CoCoNet/.prefs/
+      - ./outputs/:/opt/CoCoNet/outputs/
+      - ./CoCoNet-model/parameters/:/opt/CoCoNet/parameters/
+
+volumes:
+  coconet-prefs:
