@@ -5,6 +5,26 @@ Containerised headless runner for the CoCoNet V3.0 coral reef model, built on Ne
 ## Prerequisites
 
 - Docker & Docker Compose
+- The [CoCoNet model repository](https://github.com/gbrrestoration/CoCoNet-model) checked out at the desired version inside `CoCoNet-model/`
+
+## Model Version
+
+The Docker image copies the contents of `CoCoNet-model/` into the container at build time. This means the model code, reef data, and coastline data are baked into the image. You must have the correct version of the CoCoNet model repository in place **before** building.
+
+To use a specific version:
+
+```bash
+# Clone or update the model repo at the desired tag/branch
+git clone https://github.com/gbrrestoration/CoCoNet-model.git CoCoNet-model
+cd CoCoNet-model
+git checkout <tag-or-branch>
+cd ..
+
+# Then build the image
+docker compose build
+```
+
+If the model code or data files change, you must rebuild the image for the changes to take effect.
 
 ## Quick Start
 
