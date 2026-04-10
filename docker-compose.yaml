@@ -1,7 +1,6 @@
 services:
   coconet-headless:
     build: .
-    image: coconet-cf-local
     environment:
       # Only specify values that differ from the baseline defaults.
       # See .env.template or generate_experiment.sh for all available parameters.
