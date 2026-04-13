@@ -5,7 +5,7 @@ Containerised headless runner for the CoCoNet V3.0 coral reef model, built on Ne
 ## Prerequisites
 
 - Docker & Docker Compose
-- The [CoCoNet model repository](https://github.com/gbrrestoration/CoCoNet-model) checked out at the desired version inside `CoCoNet-model/` at this repository root.
+- The [CoCoNet model repository](https://github.com/gbrrestoration/CoCoNet-model) checked out at the desired version inside `CoCoNet-model/` inside this repository at its root.
 
 ## Model Version
 
