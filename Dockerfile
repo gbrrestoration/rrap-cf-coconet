@@ -18,30 +18,22 @@ LABEL org.netlogo.downloads.version=${NETLOGO_VERSION}
 
 # Install the CoCoNet data files and model code
 ENV COCONET_HOME="/opt/CoCoNet"
+ENV COCONET_MODEL_DIR="CoCoNet-model"
 WORKDIR "${COCONET_HOME}"
-COPY ./CoCoNet-model ./
-COPY ./entrypoint.sh ./
-COPY ./generate_experiment.sh ./
+# COPY ./CoCoNet-model "${COCONET_HOME}/"
+COPY --chmod=755 ./entrypoint.sh "${COCONET_HOME}/"
+
+COPY --chmod=755 ./generate_experiment.sh "${COCONET_HOME}/"
 
 # Define environment variables that control how the CoCoNet model and 
 # and NetLogo platform will behave at runtime
-ENV COCONET_MODEL="${COCONET_HOME}/CoCoNet V3.0.nlogo" \
-    COCONET_OUT_DIR="${COCONET_HOME}/outputs" \
-    COCONET_PREFS_DIR="${COCONET_HOME}/.prefs" \
+ENV COCONET_MODEL="${COCONET_HOME}/${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo" \
+    COCONET_OUT_DIR="${COCONET_HOME}/${COCONET_MODEL_DIR}/outputs" \
+    COCONET_PREFS_DIR="${COCONET_HOME}/${COCONET_MODEL_DIR}/.prefs" \
     JAVA_TOOL_OPTIONS="" \
     LANG="C.UTF-8" \
     LC_ALL="C.UTF-8" \
     MAX_RAM="8G"
-
-# Ensure all the subdirectories we need exist and that all filesystem 
-# permissions are set up to allow any runtime user to execute the model.
-RUN mkdir -p "${COCONET_OUT_DIR}" "${COCONET_PREFS_DIR}" && \
-    chmod 0777 "${COCONET_OUT_DIR}" && \
-    chmod 0777 "${COCONET_PREFS_DIR}" && \
-    chmod 0666 ./*.nlogo && \
-    chmod 0666 ./*.csv && \
-    chmod 0755 "entrypoint.sh" && \
-    chmod 0755 "generate_experiment.sh"
 
 # Configure the default entrypoint to launch the CoCoNet model
 ENTRYPOINT [ "./entrypoint.sh" ]

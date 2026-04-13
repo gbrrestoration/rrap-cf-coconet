@@ -2,16 +2,21 @@ services:
   coconet-headless:
     build: .
     environment:
+      OUTPUTS_DIR: outputs
       # Only specify values that differ from the baseline defaults.
       # See .env.template or generate_experiment.sh for all available parameters.
       SSP: 1.9
-      ENSEMBLE_RUNS: 3
-      END_YEAR: 2100
-      START_COTS_CONTROL: 2019
+      ENSEMBLE_RUNS: 1
+      START_YEAR: 2015
+      END_YEAR: 2017
+      SAVE_YEAR: 2016
+      PROJECTION_YEAR: 2016
+      START_COTS_CONTROL: 9999
     volumes:
-      - coconet-prefs:/opt/CoCoNet/.prefs/
-      - ./outputs/:/opt/CoCoNet/outputs/
-      - ./CoCoNet-model/parameters/:/opt/CoCoNet/parameters/
+      - ./CoCoNet-model:/opt/CoCoNet/CoCoNet-model/
+      - coconet-prefs:/opt/CoCoNet/CoCoNet-model/.prefs/
+      # todo - clear this before each run?
+      - ./outputs/:/opt/CoCoNet/CoCoNet-model/outputs/
 
 volumes:
   coconet-prefs:
