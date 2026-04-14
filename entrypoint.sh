@@ -39,4 +39,4 @@ echo "Setup file: ${SETUP_FILE}"
 echo "Planned ensemble runs: ${ENSEMBLE_RUNS:-unknown}"
 
 echo "Launching CoCoNet in NetLogo headless mode..."
-exec "${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}"
+exec "${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}" #  --threads ${THREADS:-1} 
