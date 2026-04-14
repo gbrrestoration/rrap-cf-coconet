@@ -26,10 +26,13 @@ export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true \
 -Dfile.encoding=UTF-8 \
 ${JAVA_TOOL_OPTIONS:-}"
 
-if [ ! -d $COCONET_OUT_DIR ]; then
-    echo "!! ERROR !!: Output directory mount is required but not found at: ${COCONET_OUT_DIR}."; exit 1
+# Check if directory COCONET_OUT_DIR exists, if not, create it. If yes, clear its contents and issue a warning
+if [ -d "${COCONET_OUT_DIR}" ]; then
+    echo "!! WARNING !!: Output directory ${COCONET_OUT_DIR} already exists. Clearing its contents. If you have important data there, its too late I'm afraid."
+    rm -rf "${COCONET_OUT_DIR:?}"/*
+else
+    mkdir -p "${COCONET_OUT_DIR}"
 fi
-
 
 
 chmod -R ugo+rwX "${COCONET_HOME}"

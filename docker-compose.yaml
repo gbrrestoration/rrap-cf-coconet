@@ -14,7 +14,7 @@ services:
       PROJECTION_YEAR: 2016
       START_COTS_CONTROL: 9999
     volumes:
-      - ./outputs:/task-data/CoCoNet/CoCoNet-model/outputs
+      # - ./outputs:/task-data/CoCoNet/CoCoNet-model/outputs  #* optional - good for local (non ecs runs). ECS mount point is /task-data which encapsulates it all
       - ./CoCoNet-model:/task-data/CoCoNet/CoCoNet-model
       # - coconet-prefs:/task-data/CoCoNet/CoCoNet-model/.prefs/
       # todo - clear this before each run?
