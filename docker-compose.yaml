@@ -2,7 +2,7 @@ services:
   coconet-headless:
     build: .
     environment:
-      OUTPUTS_DIR: outputs
+      COCONET_HOME: /task-data/CoCoNet
       # THREADS: 2 # used to parallelise by modle runs ( = ensembles?)
       # Only specify values that differ from the baseline defaults.
       # See .env.template or generate_experiment.sh for all available parameters.
@@ -14,10 +14,10 @@ services:
       PROJECTION_YEAR: 2016
       START_COTS_CONTROL: 9999
     volumes:
-      - ./CoCoNet-model:/opt/CoCoNet/CoCoNet-model/
-      - coconet-prefs:/opt/CoCoNet/CoCoNet-model/.prefs/
+      - ./outputs:/task-data/CoCoNet/CoCoNet-model/outputs
+      - ./CoCoNet-model:/task-data/CoCoNet/CoCoNet-model
+      # - coconet-prefs:/task-data/CoCoNet/CoCoNet-model/.prefs/
       # todo - clear this before each run?
-      - ./outputs/:/opt/CoCoNet/CoCoNet-model/outputs/
     # sleep test entrypoiont
     # entrypoint: ["sleep", "infinity"]
 
