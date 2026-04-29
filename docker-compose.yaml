@@ -3,9 +3,6 @@ services:
     build: .
     environment:
       COCONET_HOME: /task-data/CoCoNet
-      # THREADS: 2 # used to parallelise by modle runs ( = ensembles?)
-      # Only specify values that differ from the baseline defaults.
-      # See .env.template or generate_experiment.sh for all available parameters.
       SSP: 1.9
       ENSEMBLE_RUNS: 1
       START_YEAR: 2015
@@ -14,7 +11,7 @@ services:
       PROJECTION_YEAR: 2016
       START_COTS_CONTROL: 9999
     volumes:
-      # - ./outputs:/task-data/CoCoNet/CoCoNet-model/outputs  #* optional - good for local (non ecs runs). ECS mount point is /task-data which encapsulates it all
+      - ./outputs:/task-data/CoCoNet/CoCoNet-model/outputs  #* optional - good for local (non ecs runs). ECS mount point is /task-data which encapsulates it all
       - ./CoCoNet-model:/task-data/CoCoNet/CoCoNet-model
       # - coconet-prefs:/task-data/CoCoNet/CoCoNet-model/.prefs/
       # todo - clear this before each run?
