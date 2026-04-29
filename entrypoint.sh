@@ -40,9 +40,16 @@ chmod -R ugo+rwX "${COCONET_HOME}"
 # Generate experiment XML and parameter CSV from environment variables
 /generate_experiment.sh parameters
 SETUP_FILE="parameters/generated_experiment.xml"
+PARAMS_FILE="parameters/generated_parameters.csv"
 
 echo "Setup file: ${SETUP_FILE}"
 echo "Planned ensemble runs: ${ENSEMBLE_RUNS:-unknown}"
 
 echo "Launching CoCoNet in NetLogo headless mode..."
+echo "RUNTIME ENVIRONMENT VARIABLES:"
+env
+echo ""
+echo "GENERATED PARAMETERS CSV FOR RUN:"
+cat "${PARAMS_FILE}"
+
 exec "${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}" #  --threads ${THREADS:-1} 
