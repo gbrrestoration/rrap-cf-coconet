@@ -5,6 +5,7 @@ FROM eclipse-temurin:17-jdk-jammy
 
 # Ensure the OS is up to date and clean
 RUN apt-get update && apt-get dist-upgrade -y \
+    && apt-get install -y awscli \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

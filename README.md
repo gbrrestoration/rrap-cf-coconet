@@ -78,6 +78,12 @@ docker compose up --build
 
 Model output is written to `outputs/output.csv` inside the container, which is mounted to `./outputs/` on the host.
 
+If you set `S3_OUTPUT_PATH` or `RRAP_CF_S3_OUTPUT_PATH` to a directory-style S3 URI like `s3://my-bucket/CoCoNet-NL-outputs`, the entrypoint will upload everything inside `outputs/` to that location after a successful run.
+
+If you only provide a bucket name through `S3_OUTPUT_BUCKET`, `RRAP_CF_S3_BUCKET_NAME`, or `S3_BUCKET_NAME`, the entrypoint will default to `s3://<bucket>/CoCoNet-NL-outputs` so it matches the Airflow download path you described.
+
+When this image runs on ECS, the AWS CLI uses the task role credentials that ECS injects into the container automatically. No explicit `aws sts assume-role` step is needed in the script; the default AWS credential chain picks up the task role and signs the S3 upload request for you.
+
 ## Project Structure
 
 ```
