@@ -5,20 +5,22 @@ if [ -z "$COCONET_HOME" ]; then
     echo "!! ERROR !!: COCONET_HOME environment variable is not set. Please set it. This is where the model dir (CoCoNet-model) and outputs etc will be inside of."; exit 1
 fi
 
-export COCONET_MODEL_DIR="CoCoNet-model"
+# export COCONET_MODEL_DIR="CoCoNet-model"
+export COCONET_MODEL_DIR="${COCONET_HOME}/CoCoNet-model"
 
-if [ ! -f $COCONET_HOME/$COCONET_MODEL_DIR/"CoCoNet V3.0.nlogo"  ]; then
-    echo "!! ERROR !!: CoCoNet model not found at:  ${COCONET_HOME}/${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo. Program will cannot run! Ensure the model is mounted inside COCONET_HOME = ${COCONET_HOME} with name CoCoNet-model"; exit 1
+if [ ! -f "${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"  ]; then
+    echo "!! ERROR !!: CoCoNet model not found at:  ${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo. Program will cannot run! Ensure the model is mounted inside COCONET_HOME = ${COCONET_HOME} with name CoCoNet-model"; exit 1
 fi
 
-export COCONET_OUT_DIR="${COCONET_HOME}/${COCONET_MODEL_DIR}/outputs"
-export COCONET_MODEL="${COCONET_HOME}/${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"
-export COCONET_PREFS_DIR="${COCONET_HOME}/${COCONET_MODEL_DIR}/.prefs"
+export COCONET_OUT_DIR="${COCONET_MODEL_DIR}/outputs"
+export COCONET_MODEL="${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"
+export COCONET_PREFS_DIR="${COCONET_MODEL_DIR}/.prefs"
+export COCONET_PARAMS_DIR="${COCONET_MODEL_DIR}/parameters"
+
 export JAVA_TOOL_OPTIONS=""
 export LANG="C.UTF-8"
 export LC_ALL="C.UTF-8"
 export MAX_RAM="8G"
-
 export JAVA_TOOL_OPTIONS="-Djava.awt.headless=true \
 -Xmx${MAX_RAM} \
 -Djava.library.path=${NETLOGO_HOME}/lib \
@@ -38,9 +40,10 @@ fi
 chmod -R ugo+rwX "${COCONET_HOME}"
 
 # Generate experiment XML and parameter CSV from environment variables
-/generate_experiment.sh parameters
-SETUP_FILE="parameters/generated_experiment.xml"
-PARAMS_FILE="parameters/generated_parameters.csv"
+# /generate_experiment.sh parameters
+/generate_experiment.sh "${COCONET_PARAMS_DIR}"
+SETUP_FILE="${COCONET_PARAMS_DIR}/generated_experiment.xml"
+PARAMS_FILE="${COCONET_PARAMS_DIR}/generated_parameters.csv"
 
 echo "Setup file: ${SETUP_FILE}"
 echo "Planned ensemble runs: ${ENSEMBLE_RUNS:-unknown}"
