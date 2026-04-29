@@ -54,5 +54,8 @@ env
 echo ""
 echo "GENERATED PARAMETERS CSV FOR RUN:"
 cat "${PARAMS_FILE}"
-
+echo ""
+echo "GENERATED SETUP_FILE XML FOR RUN:"
+cat "${SETUP_FILE}"
+echo ""
 exec "${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}" #  --threads ${THREADS:-1} 
