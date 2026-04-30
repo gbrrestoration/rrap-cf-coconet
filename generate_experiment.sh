@@ -16,7 +16,6 @@ mkdir -p "${OUTPUT_DIR}"
 
 # --- Baseline defaults (from parameters_baseline.csv) ---
 
-: "${MODEL_OUTPUT_DIR:=outputs}"
 : "${SSP:=2.6}"
 : "${ENSEMBLE_RUNS:=30}"
 : "${START_YEAR:=1956}"
@@ -73,11 +72,11 @@ mkdir -p "${OUTPUT_DIR}"
 : "${START_PH_PROTECTION:=9999}"
 : "${PH_REEFS:=0}"
 : "${PH_PROTECTION:=0}"
+: "${MODEL_OUTPUT_DIR:=outputs}"
 
 # --- Generate the parameter CSV ---
 cat > "${PARAM_CSV}" <<CSV
 Variable name,Value,Description,Units,Format or range
-MODEL_OUTPUT_DIR,${MODEL_OUTPUT_DIR},Output directory for model results,N/A,"1.9 2.6 4.5 7.0 8.5"
 SSP,${SSP},Climate scenario,N/A,"1.9 2.6 4.5 7.0 8.5"
 ensemble-runs,${ENSEMBLE_RUNS},Number of runs in ensemble,N/A,[1 100]
 start-year,${START_YEAR},First year of each run,year,YYYY
@@ -134,6 +133,7 @@ reef-shading-reduction,${REEF_SHADING_REDUCTION},DHW reduction due to shading,DH
 start-pH-protection,${START_PH_PROTECTION},First year of pH treatment,year,YYYY
 pH-reefs,${PH_REEFS},Number of reefs treated per year,reefs,N/A
 pH-protection,${PH_PROTECTION},Protection from ocean acidification,N/A,[0 1]
+MODEL_OUTPUT_DIR,${MODEL_OUTPUT_DIR},Output directory for model results,N/A,"string path relative to COCONET_MODEL_DIR = COCONET_HOME/CoCoNet-model"
 CSV
 
 echo "Generated parameter CSV: ${PARAM_CSV}"
