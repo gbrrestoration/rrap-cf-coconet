@@ -89,8 +89,9 @@ maybe_upload_output_to_s3() {
 
 # Check if directory COCONET_OUT_DIR exists, if not, create it. If yes, clear its contents and issue a warning
 if [ -d "${COCONET_OUT_DIR}" ]; then
-    echo "!! WARNING !!: Output directory ${COCONET_OUT_DIR} already exists. Clearing its contents. If you have important data there, its too late I'm afraid."
-    rm -rf "${COCONET_OUT_DIR:?}"/*
+    echo "doing nothing"
+    # echo "!! WARNING !!: Output directory ${COCONET_OUT_DIR} already exists. Clearing its contents. If you have important data there, its too late I'm afraid."
+    # rm -rf "${COCONET_OUT_DIR:?}"/*  # temp disable clearing
 else
     mkdir -p "${COCONET_OUT_DIR}"
 fi
