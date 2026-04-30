@@ -129,7 +129,7 @@ echo "CoCoNet model run is commented out for testing. Skipping NetLogo execution
 NETLOGO_EXIT_CODE=0
 
 
-touch "${COCONET_OUT_DIR}/output11.csv"
+touch "${COCONET_OUT_DIR}/output121.csv"
 
 if [ "$NETLOGO_EXIT_CODE" -eq 0 ]; then
     echo "CoCoNet run completed successfully. Exit code: ${NETLOGO_EXIT_CODE}. Attempting to upload output to S3 if configured..."
