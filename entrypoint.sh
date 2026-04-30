@@ -131,3 +131,4 @@ echo ""
 maybe_upload_output_to_s3 "${COCONET_OUT_DIR}"
 
 exit "$NETLOGO_EXIT_CODE"
+exit 0
