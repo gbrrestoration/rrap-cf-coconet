@@ -85,7 +85,7 @@ maybe_upload_output_to_s3() {
     if [ -n "$prefix" ]; then
         key="${key}/${prefix}"
     fi
-    key="${key}/$(basename "$local_output_dir")"
+    # key="${key}/$(basename "$local_output_dir")"
 
     aws s3 cp "${local_output_dir}/" "${key}/" --recursive
     echo "Uploaded CoCoNet output directory ${local_output_dir} to ${key}/"
