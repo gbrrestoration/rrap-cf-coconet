@@ -139,5 +139,4 @@ else
 fi
 
 echo "Fin."
-sleep 100000
 exit "$NETLOGO_EXIT_CODE"
