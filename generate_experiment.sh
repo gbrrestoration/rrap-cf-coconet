@@ -16,7 +16,7 @@ mkdir -p "${OUTPUT_DIR}"
 
 # --- Baseline defaults (from parameters_baseline.csv) ---
 
-: "${MODEL_OUTPUT_DIR:=2.6}"
+: "${MODEL_OUTPUT_DIR:=outputs}"
 : "${SSP:=2.6}"
 : "${ENSEMBLE_RUNS:=30}"
 : "${START_YEAR:=1956}"

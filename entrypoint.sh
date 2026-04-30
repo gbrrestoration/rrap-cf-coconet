@@ -11,7 +11,8 @@ if [ ! -f "${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"  ]; then
     echo "!! ERROR !!: CoCoNet model not found at:  ${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo. Program will cannot run! Ensure the model is mounted inside COCONET_HOME = ${COCONET_HOME} with name CoCoNet-model"; exit 1
 fi
 
-export COCONET_OUT_DIR="${COCONET_MODEL_DIR}/outputs"
+export COCONET_OUT_DIR="${COCONET_MODEL_DIR}/${MODEL_OUTPUT_DIR}"
+echo "OUTPUT DIRECTORY: ${COCONET_OUT_DIR}"
 export COCONET_MODEL="${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"
 export COCONET_PREFS_DIR="${COCONET_MODEL_DIR}/.prefs"
 export COCONET_PARAMS_DIR="${COCONET_MODEL_DIR}/parameters"
