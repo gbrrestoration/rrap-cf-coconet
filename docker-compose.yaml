@@ -3,6 +3,7 @@ services:
     build: .
     environment:
       COCONET_HOME: /shared/CoCoNet
+      MODEL_OUTPUT_DIR: "test-output-dir"
       SSP: 1.9
       ENSEMBLE_RUNS: 1
       START_YEAR: 2015
@@ -11,7 +12,7 @@ services:
       PROJECTION_YEAR: 2016
       START_COTS_CONTROL: 9999
     volumes:
-      - ./outputs:/shared/CoCoNet/CoCoNet-model/outputs #* optional - good for local (non ecs runs). ECS mount point is /shared/CoCoNet which encapsulates it all
+      - ./test-output-dir:/shared/CoCoNet/CoCoNet-model/test-output-dir #* optional - good for local (non ecs runs). ECS mount point is /shared/CoCoNet which encapsulates it all
       - ./CoCoNet-model:/shared/CoCoNet/CoCoNet-model
       # - coconet-prefs:/shared/CoCoNet/CoCoNet-model/.prefs/
       # todo - clear this before each run?

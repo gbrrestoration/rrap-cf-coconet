@@ -15,6 +15,8 @@ EXPERIMENT_XML="${OUTPUT_DIR}/generated_experiment.xml"
 mkdir -p "${OUTPUT_DIR}"
 
 # --- Baseline defaults (from parameters_baseline.csv) ---
+
+: "${MODEL_OUTPUT_DIR:=2.6}"
 : "${SSP:=2.6}"
 : "${ENSEMBLE_RUNS:=30}"
 : "${START_YEAR:=1956}"
@@ -75,6 +77,7 @@ mkdir -p "${OUTPUT_DIR}"
 # --- Generate the parameter CSV ---
 cat > "${PARAM_CSV}" <<CSV
 Variable name,Value,Description,Units,Format or range
+MODEL_OUTPUT_DIR,${MODEL_OUTPUT_DIR},Output directory for model results,N/A,"1.9 2.6 4.5 7.0 8.5"
 SSP,${SSP},Climate scenario,N/A,"1.9 2.6 4.5 7.0 8.5"
 ensemble-runs,${ENSEMBLE_RUNS},Number of runs in ensemble,N/A,[1 100]
 start-year,${START_YEAR},First year of each run,year,YYYY
@@ -148,7 +151,7 @@ cat > "${EXPERIMENT_XML}" <<XML
             <value value="&quot;${PARAM_CSV}&quot;" />
         </enumeratedValueSet>
         <enumeratedValueSet variable="output-filename">
-            <value value="&quot;outputs/output.csv&quot;" />
+            <value value="&quot;${MODEL_OUTPUT_DIR}/output.csv&quot;" />
         </enumeratedValueSet>
         <enumeratedValueSet variable="SSP">
             <value value="${SSP}" />

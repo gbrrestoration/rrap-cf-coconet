@@ -5,7 +5,6 @@ if [ -z "$COCONET_HOME" ]; then
     echo "!! ERROR !!: COCONET_HOME environment variable is not set. Please set it. This is where the model dir (CoCoNet-model) and outputs etc will be inside of."; exit 1
 fi
 
-# export COCONET_MODEL_DIR="CoCoNet-model"
 export COCONET_MODEL_DIR="${COCONET_HOME}/CoCoNet-model"
 
 if [ ! -f "${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"  ]; then
@@ -16,6 +15,8 @@ export COCONET_OUT_DIR="${COCONET_MODEL_DIR}/outputs"
 export COCONET_MODEL="${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"
 export COCONET_PREFS_DIR="${COCONET_MODEL_DIR}/.prefs"
 export COCONET_PARAMS_DIR="${COCONET_MODEL_DIR}/parameters"
+
+echo "Starting CoCoNet entrypoint..."
 
 export JAVA_TOOL_OPTIONS=""
 export LANG="C.UTF-8"
@@ -42,6 +43,7 @@ maybe_upload_output_to_s3() {
     fi
 
     if [ -z "$raw" ]; then
+        echo "Not uploading CoCoNet output to S3 because no S3_OUTPUT_PATH or S3_OUTPUT_BUCKET environment variable was set. If you want to upload to S3, set one of those environment variables to a valid S3 URI." >&2
         return 0
     fi
 
@@ -89,8 +91,7 @@ maybe_upload_output_to_s3() {
 
 # Check if directory COCONET_OUT_DIR exists, if not, create it. If yes, clear its contents and issue a warning
 if [ -d "${COCONET_OUT_DIR}" ]; then
-    echo "doing nothing"
-    # echo "!! WARNING !!: Output directory ${COCONET_OUT_DIR} already exists. Clearing its contents. If you have important data there, its too late I'm afraid."
+    echo "!! WARNING !!: Output directory ${COCONET_OUT_DIR} already exists. Clearing its contents. If you have important data there, its too late I'm afraid."
     # rm -rf "${COCONET_OUT_DIR:?}"/*  # temp disable clearing
 else
     mkdir -p "${COCONET_OUT_DIR}"
@@ -112,23 +113,26 @@ echo "Launching CoCoNet in NetLogo headless mode..."
 echo "RUNTIME ENVIRONMENT VARIABLES:"
 env
 echo ""
-echo "GENERATED PARAMETERS CSV FOR RUN:"
-cat "${PARAMS_FILE}"
-echo ""
-echo "GENERATED SETUP_FILE XML FOR RUN:"
-cat "${SETUP_FILE}"
-echo ""
+#! For some reasons displaying these prevents the following echo commands from displaying in logs.
+# echo "GENERATED PARAMETERS CSV FOR RUN:"
+# cat "${PARAMS_FILE}"
+# echo ""
+# echo "GENERATED SETUP_FILE XML FOR RUN:"
+# cat "${SETUP_FILE}"
+# echo ""
 
 
 # "${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}" #  --threads ${THREADS:-1}
-# NETLOGO_EXIT_CODE=$?
+echo "CoCoNet model run is commented out for testing. Skipping NetLogo execution."
+NETLOGO_EXIT_CODE=0
 
-# if [ "$NETLOGO_EXIT_CODE" -eq 0 ]; then
-#     maybe_upload_output_to_s3 "${COCONET_OUT_DIR}"
-# fi
+if [ "$NETLOGO_EXIT_CODE" -eq 0 ]; then
+    echo "CoCoNet run completed successfully. Exit code: ${NETLOGO_EXIT_CODE}. Attempting to upload output to S3 if configured..."
+    maybe_upload_output_to_s3 "${COCONET_OUT_DIR}"
+else
+    echo "!! ERROR !!: CoCoNet run failed with exit code ${NETLOGO_EXIT_CODE}. Not uploading output to S3."
+fi
 
-
-maybe_upload_output_to_s3 "${COCONET_OUT_DIR}"
-
-# exit "$NETLOGO_EXIT_CODE"
-exit 0
+echo "Fin."
+sleep 100000
+exit "$NETLOGO_EXIT_CODE"
