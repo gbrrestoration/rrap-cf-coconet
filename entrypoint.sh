@@ -17,8 +17,6 @@ export COCONET_MODEL="${COCONET_MODEL_DIR}/CoCoNet V3.0.nlogo"
 export COCONET_PREFS_DIR="${COCONET_MODEL_DIR}/.prefs"
 export COCONET_PARAMS_DIR="${COCONET_MODEL_DIR}/parameters"
 
-echo "Starting CoCoNet entrypoint..."
-
 export JAVA_TOOL_OPTIONS=""
 export LANG="C.UTF-8"
 export LC_ALL="C.UTF-8"
@@ -85,8 +83,8 @@ maybe_upload_output_to_s3() {
     if [ -n "$prefix" ]; then
         key="${key}/${prefix}"
     fi
-    # key="${key}/$(basename "$local_output_dir")"
 
+    #* This doesnt create a new directory if there local_output_dir is empty.
     aws s3 cp "${local_output_dir}/" "${key}/" --recursive
     echo "Uploaded CoCoNet output directory ${local_output_dir} to ${key}/"
 }
@@ -94,16 +92,14 @@ maybe_upload_output_to_s3() {
 # Check if directory COCONET_OUT_DIR exists, if not, create it. If yes, clear its contents and issue a warning
 if [ -d "${COCONET_OUT_DIR}" ]; then
     echo "!! WARNING !!: Output directory ${COCONET_OUT_DIR} already exists. Clearing its contents. If you have important data there, its too late I'm afraid."
-    # rm -rf "${COCONET_OUT_DIR:?}"/*  # temp disable clearing
+    rm -rf "${COCONET_OUT_DIR:?}"/*  # temp disable clearing
 else
     mkdir -p "${COCONET_OUT_DIR}"
+    echo "Created output directory: ${COCONET_OUT_DIR}"
 fi
-
-
 chmod -R ugo+rwX "${COCONET_HOME}"
 
 # Generate experiment XML and parameter CSV from environment variables
-# /generate_experiment.sh parameters
 /generate_experiment.sh "${COCONET_PARAMS_DIR}"
 SETUP_FILE="${COCONET_PARAMS_DIR}/generated_experiment.xml"
 PARAMS_FILE="${COCONET_PARAMS_DIR}/generated_parameters.csv"
@@ -124,12 +120,9 @@ echo ""
 # echo ""
 
 
-# "${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}" #  --threads ${THREADS:-1}
-echo "CoCoNet model run is commented out for testing. Skipping NetLogo execution."
-NETLOGO_EXIT_CODE=0
+"${NETLOGO_HOME}/netlogo-headless.sh" --setup-file "${SETUP_FILE}" --model "${COCONET_MODEL}" #  --threads ${THREADS:-1}
+NETLOGO_EXIT_CODE=$?
 
-
-touch "${COCONET_OUT_DIR}/output121.csv"
 
 if [ "$NETLOGO_EXIT_CODE" -eq 0 ]; then
     echo "CoCoNet run completed successfully. Exit code: ${NETLOGO_EXIT_CODE}. Attempting to upload output to S3 if configured..."
@@ -138,5 +131,4 @@ else
     echo "!! ERROR !!: CoCoNet run failed with exit code ${NETLOGO_EXIT_CODE}. Not uploading output to S3."
 fi
 
-echo "Fin."
 exit "$NETLOGO_EXIT_CODE"
